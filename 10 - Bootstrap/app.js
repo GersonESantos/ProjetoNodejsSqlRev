@@ -10,6 +10,9 @@ const mysql = require('mysql2');
 // App
 const app = express();
 
+// Adicionar bootstrap
+app.use('/bootstrap', express.static('node_modules/bootstrap/dist'));
+
 // Configuração do handlebars
 
 app.engine('handlebars', engine());
