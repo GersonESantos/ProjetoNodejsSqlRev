@@ -22,6 +22,9 @@ app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 
+app.use(express.json());
+app.use(express.urlencoded({extended:false}));
+
 // Conexão com o banco de dados
 const Conexao = mysql.createConnection({
     host: 'localhost',
@@ -35,12 +38,17 @@ Conexao.connect(function(err){
     console.log('Conectado com sucesso!');
 }
 );
-
 // Rota principal
 app.get('/', function(req, res){
-    res.render('formulario');
-    
+    res.render('formulario');  
 });
+// Rota de cadastro
+app.post('/cadastrar', function(req, res){
+    
+        console.log(req.body);
+        res.end();
+    });
+    // Redirecionar
 
 // Servidor
 app.listen(8080);
