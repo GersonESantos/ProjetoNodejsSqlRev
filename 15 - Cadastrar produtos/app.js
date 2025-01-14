@@ -44,17 +44,33 @@ Conexao.connect(function(err){
 }
 );
 // Rota principal
+
 app.get('/', function(req, res){
     res.render('formulario');  
 });
-// Rota de cadastro
+// Rota para cadastro
 app.post('/cadastrar', function(req, res){
-    console.log(req.body);
-    console.log(req.files.imagem.name);
-    req.files.imagem.mv(__dirname + '/imagens/' + req.files.imagem.name);
-        res.end();
+    // Obter os dados que serão utiliados para o cadastro
+    let nome = req.body.nome;
+    let valor = req.body.valor;
+    let imagem = req.files.imagem.name;
+
+    // SQL
+    let sql = `INSERT INTO produtos (nome, valor, imagem) VALUES ('${nome}', ${valor}, '${imagem}')`;
+        
+    // Executar comando SQL
+    Conexao.query(sql, function(erro, retorno){
+        // Caso ocorra algum erro
+        if(erro) throw erro;
+
+        // Caso ocorra o cadastro
+        req.files.imagem.mv(__dirname+'/imagens/'+req.files.imagem.name);
+        console.log(retorno);
     });
-    // Redirecionar
+
+    // Retornar para a rota principal
+    res.redirect('/');
+});
 
 // Servidor
 app.listen(8080);
