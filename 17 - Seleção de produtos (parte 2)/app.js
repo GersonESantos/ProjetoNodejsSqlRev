@@ -23,6 +23,8 @@ app.use('/bootstrap', express.static('node_modules/bootstrap/dist'));
 // Adicionar css
 
 app.use('/css', express.static('./css'));
+//Referenciar a pasta imagens
+app.use('/imagens', express.static('./imagens'));
 // Configuração do handlebars
 
 app.engine('handlebars', engine());
