@@ -80,6 +80,21 @@ app.post('/cadastrar', function(req, res){
     // Retornar para a rota principal
     res.redirect('/');
 });
+// Rota para remover produtos
+app.get('/remover/:codigo&:imagem', function(req, res){
 
+    // SQL
+    let sql = `DELETE FROM produtos WHERE codigo = ${req.params.codigo}`;
+    
+        // Executar o comando SQL
+        Conexao.query(sql, function(erro, retorno){
+            // Caso falhe o comando SQL
+            if(erro) throw erro;
+        });
+        
+        // Redirecionamento
+        res.redirect('/');
+    
+    });
 // Servidor
 app.listen(8080);
