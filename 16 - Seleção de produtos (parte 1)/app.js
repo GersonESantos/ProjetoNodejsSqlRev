@@ -2,8 +2,10 @@
 const express = require('express');
 
 //importar módulo fileupload
+
 const fileUpload = require('express-fileupload');
 // importar módulo express-handlebars
+
 const { engine } = require('express-handlebars');
 
 // Importar módulo mysql
@@ -16,11 +18,11 @@ const app = express();
 app.use(fileUpload());  
 
 // Adicionar bootstrap
+
 app.use('/bootstrap', express.static('node_modules/bootstrap/dist'));
 // Adicionar css
 
 app.use('/css', express.static('./css'));
-
 // Configuração do handlebars
 
 app.engine('handlebars', engine());
@@ -44,10 +46,15 @@ Conexao.connect(function(err){
 }
 );
 // Rota principal
-
 app.get('/', function(req, res){
-    res.render('formulario');  
+    // SQL
+    let sql = 'SELECT * FROM produtos';  
+    // Executar comando SQL
+    Conexao.query(sql, function(erro, retorno){
+        res.render('formulario', {produtos: retorno});  
 });
+}
+);
 // Rota para cadastro
 app.post('/cadastrar', function(req, res){
     // Obter os dados que serão utiliados para o cadastro
