@@ -71,29 +71,41 @@ app.get('/:situacao', function(req, res){
 );
 
 
+
+
 // Rota para cadastro
+// Rota de cadastro
 app.post('/cadastrar', function(req, res){
-    // Obter os dados que serão utiliados para o cadastro
-    let nome = req.body.nome;
-    let valor = req.body.valor;
-    let imagem = req.files.imagem.name;
-
-    // SQL
-    let sql = `INSERT INTO produtos (nome, valor, imagem) VALUES ('${nome}', ${valor}, '${imagem}')`;
-        
-    // Executar comando SQL
-    Conexao.query(sql, function(erro, retorno){
-        // Caso ocorra algum erro
-        if(erro) throw erro;
-
-        // Caso ocorra o cadastro
-        req.files.imagem.mv(__dirname+'/imagens/'+req.files.imagem.name);
-        console.log(retorno);
-    });
-
-    // Retornar para a rota principal
-    res.redirect('/');
-});
+    try{
+      // Obter os dados que serão utiliados para o cadastro
+      let nome = req.body.nome;
+      let valor = req.body.valor;
+      let imagem = req.files.imagem.name;
+ 
+      // Validar o nome do produto e o valor
+      if(nome == '' || valor == '' || isNaN(valor)){
+         res.redirect('/falhaCadastro');
+      }else{
+         // SQL
+         let sql = `INSERT INTO produtos (nome, valor, imagem) VALUES ('${nome}', ${valor}, '${imagem}')`;
+         
+         // Executar comando SQL
+         Conexao.query(sql, function(erro, retorno){
+             // Caso ocorra algum erro
+             if(erro) throw erro;
+ 
+             // Caso ocorra o cadastro
+             req.files.imagem.mv(__dirname+'/imagens/'+req.files.imagem.name);
+             console.log(retorno);
+         });
+ 
+         // Retornar para a rota principal
+         res.redirect('/okCadastro');
+      }
+    }catch(erro){
+     res.redirect('/falhaCadastro');
+    }
+ });
 // Rota para remover produtos
 app.get('/remover/:codigo&:imagem', function(req, res){
     
