@@ -102,12 +102,33 @@ app.get('/remover/:codigo&:imagem', function(req, res){
     res.redirect('/');
 
 });
-// Rota para redirecionar para o formulário de alteração/edição
-app.get('/formularioEditar/:codigo', function(req, res){
+// Rota para editar produtos
+// Rota para editar produtos
+app.post('/editar', function(req, res){
+
+    // Obter os dados do formulário
+    let nome = req.body.nome;
+    let valor = req.body.valor;
+    let codigo = req.body.codigo;
+    let nomeImagem = req.body.nomeImagem;
+
+    // Definir o tipo de edição
+    try{
+        // Objeto de imagem
+        let imagem = req.files.imagem;
+
+        // SQL
+        let sql = `UPDATE produtos SET nome='${nome}', valor=${valor}, imagem='${imagem.name}' WHERE codigo=${codigo}`;
+    }catch(erro){
+        
+        // SQL
+        let sql = `UPDATE produtos SET nome='${nome}', valor=${valor} WHERE codigo=${codigo}`;
+    }
+
+    // Finalizar rota
+    res.end();
     
-    res.render('formularioEditar'); 
-    
-});    
+});
    
 // Servidor
 app.listen(8080);
