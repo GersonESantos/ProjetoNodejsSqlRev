@@ -24,8 +24,11 @@ app.use('/bootstrap', express.static('node_modules/bootstrap/dist'));
 // Adicionar css
 
 app.use('/css', express.static('./css'));
+
 //Referenciar a pasta imagens
+
 app.use('/imagens', express.static('./imagens'));
+
 // Configuração do handlebars
 
 app.engine('handlebars', engine());
@@ -48,16 +51,17 @@ Conexao.connect(function(err){
     console.log('Conectado com sucesso!');
 }
 );
-// Rota principal
-app.get('/', function(req, res){
+// Rota principal contendo a situação
+router.get('/:situacao', function(req, res){
     // SQL
-    let sql = 'SELECT * FROM produtos';  
+    let sql = 'SELECT * FROM produtos';
+
     // Executar comando SQL
     Conexao.query(sql, function(erro, retorno){
-        res.render('formulario', {produtos: retorno});  
+        res.render('formulario', {produtos:retorno, situacao:req.params.situacao});
+    });
 });
-}
-);
+
 // Rota para cadastro
 app.post('/cadastrar', function(req, res){
     // Obter os dados que serão utiliados para o cadastro
