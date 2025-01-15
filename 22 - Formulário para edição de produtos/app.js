@@ -106,9 +106,10 @@ app.get('/remover/:codigo&:imagem', function(req, res){
    // Rota para redirecionar para o formulário de alteração/edição
 app.get('/formularioEditar/:codigo', function(req, res){
     
-    console.log(req.params.codigo);
-    res.end();
     
-});
+        res.render('formularioEditar');
+    
+    });
+
 // Servidor
 app.listen(8080);
