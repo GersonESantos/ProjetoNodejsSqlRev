@@ -116,6 +116,21 @@ app.get('/formularioEditar/:codigo', function(req, res){
     
     });
 });
+// Rota para editar produtos
+app.post('/editar', function(req, res){
 
+    // Obter os dados do formulário
+    let nome = req.body.nome;
+    let valor = req.body.valor;
+    let codigo = req.body.codigo;
+    let nomeImagem = req.body.nomeImagem;
+
+    // Exibir dados
+    console.log(nome);
+    console.log(valor);
+    console.log(codigo);
+    console.log(nomeImagem);
+    res.end();
+});
 // Servidor
 app.listen(8080);
