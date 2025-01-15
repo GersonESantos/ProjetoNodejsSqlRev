@@ -116,6 +116,7 @@ app.get('/formularioEditar/:codigo', function(req, res){
     
     });
 });
+
 // Rota para editar produtos
 app.post('/editar', function(req, res){
 
@@ -125,12 +126,23 @@ app.post('/editar', function(req, res){
     let codigo = req.body.codigo;
     let nomeImagem = req.body.nomeImagem;
 
-    // Exibir dados
-    console.log(nome);
-    console.log(valor);
-    console.log(codigo);
-    console.log(nomeImagem);
+    // Definir o tipo de edição
+    try{
+        // Objeto de imagem
+        let imagem = req.files.imagem;
+
+        // SQL
+        let sql = `UPDATE produtos SET nome='${nome}', valor=${valor}, imagem='${imagem.name}' WHERE codigo=${codigo}`;
+    }catch(erro){
+        
+        // SQL
+        let sql = `UPDATE produtos SET nome='${nome}', valor=${valor} WHERE codigo=${codigo}`;
+    }
+
+    // Finalizar rota
     res.end();
+    
 });
+
 // Servidor
 app.listen(8080);
