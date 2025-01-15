@@ -106,10 +106,16 @@ app.get('/remover/:codigo&:imagem', function(req, res){
    // Rota para redirecionar para o formulário de alteração/edição
 app.get('/formularioEditar/:codigo', function(req, res){
     
-    
-        res.render('formularioEditar');
+    let sql = `SELECT * FROM produtos WHERE codigo = ${req.params.codigo}`;
+        // Executar comando SQL
+        Conexao.query(sql, function(erro, retorno){
+            // Caso ocorra algum erro
+            if(erro) throw erro;
+            
+            res.render('formularioEditar', {produto: retorno[0]});
     
     });
+});
 
 // Servidor
 app.listen(8080);
