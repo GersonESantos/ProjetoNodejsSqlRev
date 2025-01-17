@@ -80,23 +80,21 @@ app.get('/:situacao', function(req, res){
 );
 
 
-
-
-// Rota para cadastro
 // Rota de cadastro
 app.post('/cadastrar', function(req, res){
     try{
       // Obter os dados que serão utiliados para o cadastro
       let nome = req.body.nome;
       let valor = req.body.valor;
+      let categoria = req.body.categoria;
       let imagem = req.files.imagem.name;
  
       // Validar o nome do produto e o valor
-      if(nome == '' || valor == '' || isNaN(valor)){
+      if(nome == '' || valor == '' || isNaN(valor) || categoria == '' ){
          res.redirect('/falhaCadastro');
       }else{
          // SQL
-         let sql = `INSERT INTO produtos (nome, valor, imagem) VALUES ('${nome}', ${valor}, '${imagem}')`;
+         let sql = `INSERT INTO produtos (nome, valor, imagem, categoria) VALUES ('${nome}', ${valor}, '${imagem}', '${categoria}')`; 
          
          // Executar comando SQL
          Conexao.query(sql, function(erro, retorno){
