@@ -59,26 +59,35 @@ Conexao.connect(function(err){
 );
 // Rota principal
 app.get('/', function(req, res){
-    // SQL
-    let sql = 'SELECT * FROM produtos';  
-    // Executar comando SQL
-    Conexao.query(sql, function(erro, retorno){
-        res.render('formulario', {produtos: retorno});  
-});
+  res.render('formulario');
+
 }
 );
 
 // Rota principal contendo a situacao
 app.get('/:situacao', function(req, res){
+    
+    res.render('formulario', {situacao: req.params.situacao});  
+});
+
+app.get('/listar/:categoria', function(req, res){
+    // Obter categoria
+    let categoria = req.params.categoria;
+
     // SQL
-    let sql = 'SELECT * FROM produtos';  
+    let sql = '';
+
+    if(categoria == 'todos'){
+        sql = 'SELECT * FROM produtos';
+    }else{
+        sql = `SELECT * FROM produtos WHERE categoria = '${categoria}'`;
+    }
+
     // Executar comando SQL
     Conexao.query(sql, function(erro, retorno){
-        res.render('formulario', {produtos: retorno, situacao: req.params.situacao});  
+        res.render('lista', {produtos:retorno});
+    });
 });
-}
-);
-
 
 // Rota de cadastro
 app.post('/cadastrar', function(req, res){
