@@ -88,7 +88,18 @@ app.get('/listar/:categoria', function(req, res){
         res.render('lista', {produtos:retorno});
     });
 });
+app.post('/pesquisa', function(req, res){
+    // Obter o termo pesquisado
+    let termo = req.body.termo;
 
+    // SQL
+    let sql = `SELECT * FROM produtos WHERE nome LIKE '%${termo}%'`;
+
+    // Executar comando SQL
+    Conexao.query(sql, function(erro, retorno){
+        res.render('lista', {produtos:retorno});
+    });
+});
 // Rota de cadastro
 app.post('/cadastrar', function(req, res){
     try{
