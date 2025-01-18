@@ -88,7 +88,9 @@ app.get('/listar/:categoria', function(req, res){
         res.render('lista', {produtos:retorno});
     });
 });
-app.post('/pesquisa', function(req, res){
+// Rota de pesquisa
+
+app.post('/pesquisa', function pesquisa(req, res){
     // Obter o termo pesquisado
     let termo = req.body.termo;
 
@@ -97,9 +99,14 @@ app.post('/pesquisa', function(req, res){
 
     // Executar comando SQL
     Conexao.query(sql, function(erro, retorno){
-        res.render('lista', {produtos:retorno});
+        let semRegistros = retorno.length == 0 ? true : false;
+
+        res.render('lista', {produtos:retorno, semRegistros:semRegistros});
     });
-});
+}); 
+
+//Fim da rota de pesquisa
+
 // Rota de cadastro
 app.post('/cadastrar', function(req, res){
     try{
