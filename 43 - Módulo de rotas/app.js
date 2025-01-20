@@ -8,8 +8,9 @@ const fileUpload = require('express-fileupload');
 // importar módulo express-handlebars
 
 const { engine } = require('express-handlebars');
-// importar módulo de serviços
-const servico = require('./servicos/produto_servico');
+// importar módulo de rotas
+const rota_produto = require('./rotas/produtos_rotas');
+
 // App
 const app = express();
 
@@ -42,45 +43,8 @@ app.set('views', './views');
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
-// Rota principal
-app.get('/', function(req, res){
-    servico.formularioCadastro(req, res);
-});
-// Rota principal contendo a situacao
-app.get('/:situacao', function(req, res){
-  servico.formularioCadastroComSituacao(req, res);  
-      
-});
-
-app.get('/listar/:categoria', function(req, res){
- servico.listagemProdutos(req, res);   
-});
-// Rota de pesquisa
-
-app.post('/pesquisa', function pesquisa(req, res){
-    servico.pesquisa(req, res);    
-}); 
-
-//Fim da rota de pesquisa
-
-// Rota de cadastro
-app.post('/cadastrar', function(req, res){
-    servico.cadastrarProduto(req, res);
- });
-// Rota para remover produtos
-app.get('/remover/:codigo&:imagem', function(req, res){
-    servico.removerProduto(req, res);
-});
-    
-   // Rota para redirecionar para o formulário de alteração/edição
-app.get('/formularioEditar/:codigo', function(req, res){
-    servico.formularioEditar(req, res); 
-});
-
-// Rota para editar produtos
-app.post('/editar', function(req, res){
-    servico.editarProduto(req, res);
-});
+// rotas
+app.use('/', rota_produto);
 
 // Servidor
 app.listen(8080);
