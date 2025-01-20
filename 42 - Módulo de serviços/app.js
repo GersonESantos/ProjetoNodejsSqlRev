@@ -1,10 +1,6 @@
 // Importar módulo express
 const express = require('express');
 
-// Importar o módulo de conexão com banco MySQL
-const Conexao = require('./bd/conexao_mysql');
-
-
 
 //importar módulo fileupload
 
@@ -13,9 +9,6 @@ const fileUpload = require('express-fileupload');
 
 const { engine } = require('express-handlebars');
 
-
-// fileupload
-const fs = require('fs');
 // App
 const app = express();
 
