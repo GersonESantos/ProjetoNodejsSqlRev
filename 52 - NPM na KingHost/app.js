@@ -18,5 +18,7 @@ app.get('/:nome', function(req, res){
     res.end();
 });
 
+// Porta do servidor app.listen(21100);
+
 // Porta do servidor
-app.listen(21002);
+app.listen(8080);
