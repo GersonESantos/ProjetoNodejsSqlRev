@@ -1,6 +1,5 @@
 // Importar módulo express
 const express = require('express');
-
 // Importar módulo fileupload
 const fileupload = require('express-fileupload');
 
