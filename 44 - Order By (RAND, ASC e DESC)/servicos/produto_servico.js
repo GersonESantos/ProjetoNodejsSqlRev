@@ -36,9 +36,9 @@ function listagemProdutos(req, res){
     let sql = '';
 
     if(categoria == 'todos'){
-        sql = 'SELECT * FROM produtos';
+        sql = 'SELECT * FROM produtos ORDER BY RAND()';
     }else{
-        sql = `SELECT * FROM produtos WHERE categoria = '${categoria}'`;
+        sql = `SELECT * FROM produtos WHERE categoria = '${categoria}' ORDER BY nome ASC`;
     }
 
     // Executar comando SQL
