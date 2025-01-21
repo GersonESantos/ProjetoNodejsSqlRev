@@ -35,7 +35,7 @@ router.get('/cadastrar', function(req, res){
     servico.cadastrarProduto(req, res);
  });
 // Rota para remover produtos
-router.get('/remover/:codigo&:imagem', function(req, res){
+router.get('/remover/:codigo', function(req, res){
     servico.removerProduto(req, res);
 });
     

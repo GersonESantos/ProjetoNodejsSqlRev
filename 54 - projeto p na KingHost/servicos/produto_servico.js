@@ -16,6 +16,12 @@ function formularioCadastroComSituacao(req, res){
 
 // Função para exibir o formulário para edição de produtos
 function formularioEditar(req, res){
+    
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    res.setHeader('Expires', '0');
+    res.setHeader('Pragma', 'no-cache');
+
+    
     let sql = `SELECT * FROM produtos WHERE codigo = ${req.params.codigo}`;
     // Executar comando SQL
     Conexao.query(sql, function(erro, retorno){
@@ -29,6 +35,10 @@ function formularioEditar(req, res){
 
 // Função para exibir a listagem de produtos
 function listagemProdutos(req, res){
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    res.setHeader('Expires', '0');
+    res.setHeader('Pragma', 'no-cache');
+
     // Obter categoria
     let categoria = req.params.categoria;
 
@@ -49,6 +59,10 @@ function listagemProdutos(req, res){
 
 // Função para realizar a pesquisa de produtos
 function pesquisa(req, res){
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    res.setHeader('Expires', '0');
+    res.setHeader('Pragma', 'no-cache');
+
     // Obter o termo pesquisado
     let termo = req.body.termo;
 
@@ -99,29 +113,52 @@ function cadastrarProduto(req, res){
 
 // Função para realizar a remoção de produtos
 function removerProduto(req, res){
-    // Tratamento de exeção
-    try{
-        // SQL
-        let sql = `DELETE FROM produtos WHERE codigo = ${req.params.codigo}`;
+    // Tratamento de exceção
+    try {
+        // SQL para obter o nome da imagem associado ao código do produto
+        let sqlConsulta = `SELECT imagem FROM produtos WHERE codigo = ${req.params.codigo}`;
 
-        // Executar o comando SQL
-        Conexao.query(sql, function(erro, retorno){
-            // Caso falhe o comando SQL
-            if(erro) throw erro;
+        // Executar a consulta SQL para obter o nome da imagem
+        Conexao.query(sqlConsulta, function(erroConsulta, resultadoConsulta) {
+            if (erroConsulta) {
+                throw erroConsulta;
+            }
 
-            // Caso o comando SQL funcione
-            fs.unlink(__dirname+'/imagens/'+req.params.imagem, (erro_imagem)=>{
-                console.log('Falha ao remover a imagem ');
+            // Verificar se o resultado da consulta contém a imagem
+            if (resultadoConsulta.length > 0 && resultadoConsulta[0].imagem) {
+                const nomeImagem = resultadoConsulta[0].imagem;
+
+                // Caminho completo da imagem
+                const caminhoImagem = path.join(__dirname, '../imagens', nomeImagem);
+
+                // Excluir a imagem do diretório
+                fs.unlink(caminhoImagem, function(erroImagem) {
+                    if (erroImagem) {
+                        console.log('Falha ao remover a imagem:', erroImagem);
+                    } else {
+                        console.log('Imagem removida com sucesso.');
+                    }
+                });
+            }
+
+            // SQL para excluir o registro do banco de dados
+            let sqlExclusao = `DELETE FROM produtos WHERE codigo = ${req.params.codigo}`;
+
+            // Executar o comando SQL de exclusão no banco de dados
+            Conexao.query(sqlExclusao, function(erroExclusao, retornoExclusao) {
+                if (erroExclusao) {
+                    throw erroExclusao;
+                }
+
+                // Redirecionamento após a remoção bem-sucedida
+                res.redirect('/okRemover');
             });
         });
-
-        // Redirecionamento
-        res.redirect('/okRemover');
-    }catch(erro){
+    } catch (erro) {
+        console.error('Erro ao remover o produto:', erro);
         res.redirect('/falhaRemover');
     }
 }
-
 // Função responsável pela edição de produtos
 function editarProduto(req, res){
        // Obter os dados do formulário
