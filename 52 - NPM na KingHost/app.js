@@ -1,4 +1,5 @@
 // Criar objeto app
+const express = require('express');
 const app = express();
 
 // Rotas
@@ -18,7 +19,6 @@ app.get('/:nome', function(req, res){
     res.end();
 });
 
-// Porta do servidor app.listen(21100);
+// Porta do servidor 
+ app.listen(21100);
 
-// Porta do servidor
-app.listen(8080);
