@@ -1,4 +1,4 @@
-// Importar o módulo express
+// Importar o módulo express meu
 const express = require('express');
 
 // Extraíndo a função Router do módulo express
@@ -24,14 +24,14 @@ router.get('/listar/:categoria', function(req, res){
 });
 // Rota de pesquisa
 
-router.get('/pesquisa', function pesquisa(req, res){
+router.post('/pesquisa', function pesquisa(req, res){
     servico.pesquisa(req, res);    
 }); 
 
 //Fim da rota de pesquisa
 
-// Rota de cadastro
-router.get('/cadastrar', function(req, res){
+// Rota de cadastro meu
+router.post('/cadastrar', function(req, res){
     servico.cadastrarProduto(req, res);
  });
 // Rota para remover produtos
@@ -45,7 +45,7 @@ router.get('/formularioEditar/:codigo', function(req, res){
 });
 
 // Rota para editar produtos
-router.get('/editar', function(req, res){
+router.post('/editar', function(req, res){
     servico.editarProduto(req, res);
 });
 // Exportar o router
