@@ -1,0 +1,151 @@
+*** Etapa 1: Remover pacotes: ***
+
+- Nodemon: npm uninstall nodemon
+- Express-handlebars: npm uninstall express-handlebars
+- MySQL2: npm uninstall mysql2
+- Update (caso tenha): npm uninstall update
+
+
+*** Etapa 2: Instalar pacotes: ***
+
+- Express-handlebars: npm I express-handlebars@5.0.0
+- MySQL: npm i mysql
+- Popper: npm i @popperjs/core
+
+
+*** Etapa 3: Alterar a estrutura do arquivo app.js: ***
+
+// Path
+const path = require('path');
+
+ // Importar módulo express-handlebars
+const exphbs = require('express-handlebars');
+
+// Configuração do express-handlebars
+app.engine('handlebars', exphbs({
+  helpers: {
+    // Função auxiliar para verificar igualdade
+    condicionalIgualdade: function (parametro1, parametro2, options) {
+      return parametro1 === parametro2 ? options.fn(this) : options.inverse(this);
+    }
+  }
+}));
+app.set('view engine', 'handlebars');
+
+
+*** Etapa 4: Estrutura de conexão do banco MySQL: ***
+
+// Importar módulo mysql
+const mysql = require('mysql');
+
+// Configuração de conexão
+const conexao = mysql.createConnection({
+    host:'mysql.seusite.com.br',
+    user:'nome_de_usuario',
+    password:'senha_de_acesso',
+    database:'nome_base_de_dados'
+});
+
+
+*** Etapa 5: Alterar a estrutura do arquivo main.handlebars: ***
+
+{{!-- Base href --}}
+<base href="https://ralflima.com.br/">
+
+{{!-- Bootstrap --}}
+<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+
+*** Etapa 6: Alterar a estrutura do arquivo main.handlebars: ***
+
+Alterar o link de remoção do arquivo lista.handlebars:
+<a href="/remover/{{codigo}}" class="btn btn-danger">Remover</a>
+
+Alterar a rota para efetuar a exclusão no arquivo produtos_rotas.js:
+router.get('/remover/:codigo', function(req, res){
+    servico.removerProduto(req, res);
+});
+
+Alterar a regra de negócios da exclusão no arquivo produtos_servico.js:
+function removerProduto(req, res){
+    // Tratamento de exceção
+    try {
+        // SQL para obter o nome da imagem associado ao código do produto
+        let sqlConsulta = `SELECT imagem FROM produtos WHERE codigo = ${req.params.codigo}`;
+
+        // Executar a consulta SQL para obter o nome da imagem
+        conexao.query(sqlConsulta, function(erroConsulta, resultadoConsulta) {
+            if (erroConsulta) {
+                throw erroConsulta;
+            }
+
+            // Verificar se o resultado da consulta contém a imagem
+            if (resultadoConsulta.length > 0 && resultadoConsulta[0].imagem) {
+                const nomeImagem = resultadoConsulta[0].imagem;
+
+                // Caminho completo da imagem
+                const caminhoImagem = path.join(__dirname, '../imagens', nomeImagem);
+
+                // Excluir a imagem do diretório
+                fs.unlink(caminhoImagem, function(erroImagem) {
+                    if (erroImagem) {
+                        console.log('Falha ao remover a imagem:', erroImagem);
+                    } else {
+                        console.log('Imagem removida com sucesso.');
+                    }
+                });
+            }
+
+            // SQL para excluir o registro do banco de dados
+            let sqlExclusao = `DELETE FROM produtos WHERE codigo = ${req.params.codigo}`;
+
+            // Executar o comando SQL de exclusão no banco de dados
+            conexao.query(sqlExclusao, function(erroExclusao, retornoExclusao) {
+                if (erroExclusao) {
+                    throw erroExclusao;
+                }
+
+                // Redirecionamento após a remoção bem-sucedida
+                res.redirect('/okRemover');
+            });
+        });
+    } catch (erro) {
+        console.error('Erro ao remover o produto:', erro);
+        res.redirect('/falhaRemover');
+    }
+}
+
+
+*** Etapa 7: Resolver problemas de cache: ***
+
+No arquivo produtos_servico.js, localize as seguintes funções e adicione o código abaixo:
+
+ // Definir cabeçalhos para evitar o cache
+res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+res.setHeader('Expires', '0');
+res.setHeader('Pragma', 'no-cache');
+
+Funções:
+- formularioEditar;
+- listagemProdutos;
+- pesquisa.
+
+
+*** Bônus: Arrumar falha no upload de imagens: ***
+
+No arquivo produtos_servico.js, vamos fazer três ações para resolver este problema:
+
+1º Adicionar o path:
+// Importar o módulo path
+const path = require('path');
+
+2º Na função cadastrarProduto, iremos alterar a estrutura onde a imagem é salva:
+const diretorio = path.join(__dirname, '../');
+req.files.imagem.mv(diretorio+'/imagens/'+req.files.imagem.name);
+
+3º Lembre-se que existe o upload na edição do produto, localize a função editarProduto:
+const diretorio = path.join(__dirname, '../');
+req.files.imagem.mv(diretorio+'/imagens/'+req.files.imagem.name);
+
+
