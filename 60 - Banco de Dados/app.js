@@ -7,7 +7,7 @@ const express = require('express');
 const app = express();
 
 // Conexão com o banco de dados
-
+const Conexao = require('./bd/conexao_mysql');
 
 // Rota de teste
 app.get('/', function(req, res){
