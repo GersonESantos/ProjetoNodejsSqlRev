@@ -46,4 +46,4 @@ app.use(express.urlencoded({extended:false}));
 app.use('/', rota_produto);
 
 // Servidor
-app.listen(21002);
+app.listen(21100);
