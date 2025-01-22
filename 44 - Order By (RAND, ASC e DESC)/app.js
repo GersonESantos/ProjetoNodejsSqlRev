@@ -4,7 +4,7 @@ const express = require('express');
 
 //importar módulo fileupload
 
-const fileUpload = require('express-fileupload');
+//const fileUpload = require('express-fileupload');
 // importar módulo express-handlebars
 
 const { engine } = require('express-handlebars');
