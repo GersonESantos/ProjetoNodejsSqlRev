@@ -1,19 +1,19 @@
+/* meu */
 form{
     margin-top: 30px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+    text-align: center;
 }
+
 form input, form select{
     margin-top: 10px;
 }   
 form input[type="submit"]{
     margin-top: 10px;
-   
+
 }   
 form img{
     width: 200px;
-    margin: 40px; 
+    margin-bottom: 40px; 
     }
 .card{
     margin-top: 40px;
@@ -38,19 +38,3 @@ form img{
     margin: 0;
 }
 
-/* Estrutura do formulário de pesquisa (barra de navegação) */
-.formularioPesquisa input,
-.formularioPesquisa input[type="submit"]
-{
-    margin: 0;
-}
-
-/* Configurar o dropdown para ser exibido quando passar o cursor sobre o link */
-.dropdown:hover .dropdown-menu {
-    display: block;
-    margin-top: 0;
-}
-.produtoBaoencontrado{
-    text-align: center  ;
-    margin-top: 50px;   
-}
