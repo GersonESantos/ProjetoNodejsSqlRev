@@ -1,14 +1,12 @@
 // Importar módulo express 44
 const express = require('express');
 
+// Importar módulo fileupload
+const fileupload = require('express-fileupload');
 
-//importar módulo fileupload
-
-const fileUpload = require('express-fileupload');
-// importar módulo express-handlebars
-
+// Importar módulo express-handlebars
 const { engine } = require('express-handlebars');
-// importar módulo de rotas
+// Importar módulo de rotas
 const rota_produto = require('./rotas/produtos_rotas');
 
 // App
