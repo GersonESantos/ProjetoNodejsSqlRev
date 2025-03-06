@@ -13,7 +13,7 @@ const rota_produto = require('./rotas/produtos_rotas');
 const app = express();
 
 // habilitar fileupload
-app.use(fileUpload());  
+app.use(fileupload());  
 
 // Adicionar bootstrap
 
